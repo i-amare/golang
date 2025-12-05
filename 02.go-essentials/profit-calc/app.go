@@ -3,7 +3,6 @@ package main
 import "fmt"
 
 func main() {
-
 	var revenue float64 = inputFloat64("Please input revenue: ")
 	var expenses float64 = inputFloat64("Please input expenses: ")
 	var taxRate float64 = inputFloat64("Please input tax rate: ")
@@ -14,7 +13,7 @@ func main() {
 	ratio := postTaxProfit / preTaxProfit
 
 	fmt.Println("Earnings before tax: ", preTaxProfit)
-	fmt.Println("Tax Expense: (", taxExpense, ")")
+	fmt.Printf("Tax Expense: (%v)\n", taxExpense)
 	fmt.Println("Profit for period: ", postTaxProfit)
 	fmt.Println("Ratio: ", ratio)
 }
