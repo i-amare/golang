@@ -21,8 +21,6 @@ func main() {
 		fmt.Print("Your choice: ")
 		fmt.Scan(&choice)
 
-		// wantsCheckBalance := choice == 1
-
 		switch choice {
 		case 1:
 			fmt.Println("Your balance is", accountBalance)
