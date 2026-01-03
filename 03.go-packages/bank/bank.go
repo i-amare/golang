@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
+	"teamcodeberry.com/bank/utils"
 )
 
 func main() {
-	accountBalance := readBalance()
+	accountBalance := utils.ReadBalance()
 
 	fmt.Println("Welcome to Go Bank!")
 
@@ -37,7 +38,7 @@ func main() {
 			}
 
 			accountBalance += depositAmount // accountBalance = accountBalance + depositAmount
-			writeBalance(accountBalance)
+			utils.WriteBalance(accountBalance)
 			fmt.Println("Balance updated! New amount:", accountBalance)
 		case 3:
 			fmt.Print("Withdrawal amount: ")
@@ -55,7 +56,7 @@ func main() {
 			}
 
 			accountBalance -= withdrawalAmount // accountBalance = accountBalance + depositAmount
-			writeBalance(accountBalance)
+			utils.WriteBalance(accountBalance)
 			fmt.Println("Balance updated! New amount:", accountBalance)
 		default:
 			fmt.Println("Goodbye!")

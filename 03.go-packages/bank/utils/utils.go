@@ -1,4 +1,4 @@
-package main
+package utils
 
 import (
 	"fmt"
@@ -8,12 +8,12 @@ import (
 
 const FILENAME = "account.txt"
 
-func writeBalance(accBalance float64) {
+func WriteBalance(accBalance float64) {
 	balanceText := fmt.Sprint(accBalance)
 	os.WriteFile(FILENAME, []byte(balanceText), 0644)
 }
 
-func readBalance() float64 {
+func ReadBalance() float64 {
 	data, err := os.ReadFile(FILENAME)
 	if err != nil {
 		return 0
