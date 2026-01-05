@@ -6,6 +6,25 @@ import (
 	"time"
 )
 
+type Admin struct {
+	Email string
+	password string
+	User
+}
+
+func NewAdmin(email string, password string) *Admin {
+	return &Admin{
+		Email: email,
+		password: password,
+		User: User{
+			firstName: "ADMIN",
+			lastName: "ADMIN",
+			birthdate: "---",
+			dateCreated: time.Now(),
+		},
+	}
+}
+
 type User struct {
 	firstName   string
 	lastName    string
