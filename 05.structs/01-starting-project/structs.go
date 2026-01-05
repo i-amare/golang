@@ -21,6 +21,12 @@ func (user User) outputUserData() {
 	fmt.Println("}")
 }
 
+func (user *User) clearUserName() {
+	user.firstName = ""
+	user.lastName = ""
+	fmt.Println("Cleared User Name")
+}
+
 func main() {
 	firstName := getUserData("Please enter your first name: ")
 	lastName := getUserData("Please enter your last name: ")
@@ -33,6 +39,9 @@ func main() {
 		dateCreated: time.Now(),
 	}
 
+
+	appUser.outputUserData()
+	appUser.clearUserName()
 	appUser.outputUserData()
 }
 
