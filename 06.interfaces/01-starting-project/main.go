@@ -10,9 +10,29 @@ import (
 	"example.com/todo/todo"
 )
 
-type Saver interface {
+type File interface {
 	Save() error
-	Display(any)
+	Display()
+}
+
+func SaveFile(file File) error {
+	file.Save()
+
+	err := file.Save()
+
+	if err != nil {
+		fmt.Println("Saving the file failed.")
+		return err
+	}
+
+	fmt.Println("Saving the file succeeded!")
+	return nil
+}
+
+func DisplayFile(file File) {
+	fmt.Println("-----------------------------------------------")
+	file.Display()
+	fmt.Println("-----------------------------------------------")
 }
 
 func main() {
@@ -31,15 +51,8 @@ func createTodo() {
 		return
 	}
 
-	todo.Display()
-	err = todo.Save()
-
-	if err != nil {
-		fmt.Println("Saving the todo failed.")
-		return
-	}
-
-	fmt.Println("Saving the todo succeeded!")
+	DisplayFile(todo)
+	SaveFile(todo)
 }
 
 func createNote() {
@@ -53,15 +66,8 @@ func createNote() {
 		return
 	}
 
-	userNote.Display()
-	err = userNote.Save()
-
-	if err != nil {
-		fmt.Println("Saving the note failed.")
-		return
-	}
-
-	fmt.Println("Saving the note succeeded!")
+	DisplayFile(userNote)
+	SaveFile(userNote)
 }
 
 func getUserInput(prompt string) string {
