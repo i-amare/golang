@@ -11,8 +11,6 @@ import (
 
 type saver interface {
 	Save() error
-	Display(string)
-
 }
 
 func main() {
