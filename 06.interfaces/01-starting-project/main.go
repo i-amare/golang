@@ -9,6 +9,12 @@ import (
 	"example.com/todo/todo"
 )
 
+type saver interface {
+	Save() error
+	Display(string)
+
+}
+
 func main() {
 	todoText := getUserInput("Todo Text: ")
 
