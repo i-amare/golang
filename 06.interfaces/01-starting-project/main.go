@@ -6,14 +6,22 @@ import (
 	"os"
 	"strings"
 
+	"example.com/todo/note"
 	"example.com/todo/todo"
 )
 
-type saver interface {
+type Saver interface {
 	Save() error
+	Display(any)
 }
 
 func main() {
+	createTodo()
+	fmt.Println("-----------------------------------------------")
+	createNote()
+}
+
+func createTodo() {
 	todoText := getUserInput("Todo Text: ")
 
 	todo, err := todo.New(todoText)
@@ -34,11 +42,26 @@ func main() {
 	fmt.Println("Saving the todo succeeded!")
 }
 
-func getNoteData() (string, string) {
-	title := getUserInput("Note title:")
-	content := getUserInput("Note content:")
+func createNote() {
+	title := getUserInput("Note Title: ")
+	content := getUserInput("Note Content: ")
 
-	return title, content
+	userNote, err := note.New(title, content)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	userNote.Display()
+	err = userNote.Save()
+
+	if err != nil {
+		fmt.Println("Saving the note failed.")
+		return
+	}
+
+	fmt.Println("Saving the note succeeded!")
 }
 
 func getUserInput(prompt string) string {
