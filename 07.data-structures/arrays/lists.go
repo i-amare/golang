@@ -14,9 +14,16 @@ func main() {
 
 	fmt.Println(prices)
 	fmt.Println(productNames)
-
 	fmt.Println(prices[2])
-
 	fmt.Println(featuredPrices)
 	fmt.Println(highlightedPrices)
+
+	highlightedPrices[0] = 219.78
+	fmt.Println(prices)
+
+	var bigArr [5]string
+	bigArr[0] = "a"
+	smallArr := bigArr[:2]
+	fmt.Println(len(bigArr), cap(bigArr))
+	fmt.Println(len(smallArr), cap(smallArr))
 }
