@@ -7,18 +7,23 @@ func main() {
 	hobbyList := [3]string{"Running", "Climbing", "Hiking"}
 	fmt.Println(hobbyList)
 	fmt.Println("--------------------------------------------")
-	
+
 	// 2
 	hobbyListSlice := hobbyList[1:]
 	fmt.Println(hobbyList[0])
 	fmt.Println(hobbyListSlice)
 	fmt.Println("--------------------------------------------")
-	
+
 	// 3
 	slice1 := hobbyList[0:2]
 	slice2 := hobbyList[:2]
 	fmt.Println(slice1)
 	fmt.Println(slice2)
+	fmt.Println("--------------------------------------------")
+
+	// 4
+	newSlice := slice1[1 : cap(slice1)]
+	fmt.Println(newSlice)
 	fmt.Println("--------------------------------------------")
 }
 
