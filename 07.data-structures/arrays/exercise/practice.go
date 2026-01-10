@@ -32,6 +32,34 @@ func main() {
 	courseGoals = append(courseGoals, "Do a LeetCode hard problem")
 	fmt.Println(courseGoals)
 	fmt.Println("--------------------------------------------")
+	
+	// 7
+	type Product struct {
+		id string
+		title string
+		price float64
+	}
+	
+	product1 := Product{
+		id: "#1",
+		title: "Product 1",
+		price: 100,
+		} 
+	product2 := Product{
+		id: "#2",
+		title: "Product 2",
+		price: 200,
+		} 
+	product3 := Product{
+		id: "#3",
+		title: "Product 3",
+		price: 300,
+	} 
+	
+	productList := []Product{product1, product2}
+	productList = append(productList, product3)
+	fmt.Println(productList)
+	fmt.Println("--------------------------------------------")
 }
 
 // Time to practice what you learned!
