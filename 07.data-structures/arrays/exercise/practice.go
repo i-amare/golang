@@ -22,9 +22,12 @@ func main() {
 	fmt.Println("--------------------------------------------")
 
 	// 4
-	newSlice := slice1[1 : cap(slice1)]
+	newSlice := slice1[1:cap(slice1)]
 	fmt.Println(newSlice)
 	fmt.Println("--------------------------------------------")
+
+	// 5
+	courseGoals := []string{"Make a Rest API", "Connect API to a mobile app"}
 }
 
 // Time to practice what you learned!
