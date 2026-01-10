@@ -6,6 +6,11 @@ func main() {
 	// 1
 	hobbyList := [3]string{"Running", "Climbing", "Hiking"}
 	fmt.Println(hobbyList)
+
+	// 2
+	hobbyListSlice := hobbyList[1:]
+	fmt.Println(hobbyList[0])
+	fmt.Println(hobbyListSlice)
 }
 
 // Time to practice what you learned!
