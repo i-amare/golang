@@ -5,8 +5,11 @@ import (
 )
 
 func main() {
-	prices := []float64{}
+	prices := []float64{200, 149.99}
+	updatedPrices := append(prices, 249.99);
+	
 	fmt.Println(prices)
+	fmt.Println(updatedPrices)
 }
 
 // func main() {
