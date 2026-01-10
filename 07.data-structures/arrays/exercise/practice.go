@@ -1,7 +1,11 @@
 package main
 
-func main() {
+import "fmt"
 
+func main() {
+	// 1
+	hobbyList := [3]string{"Running", "Climbing", "Hiking"}
+	fmt.Println(hobbyList)
 }
 
 // Time to practice what you learned!
