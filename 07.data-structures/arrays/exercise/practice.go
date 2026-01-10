@@ -26,8 +26,12 @@ func main() {
 	fmt.Println(newSlice)
 	fmt.Println("--------------------------------------------")
 
-	// 5
+	// 5, 6
 	courseGoals := []string{"Make a Rest API", "Connect API to a mobile app"}
+	courseGoals[1] = "Learn Map data structure"
+	courseGoals = append(courseGoals, "Do a LeetCode hard problem")
+	fmt.Println(courseGoals)
+	fmt.Println("--------------------------------------------")
 }
 
 // Time to practice what you learned!
