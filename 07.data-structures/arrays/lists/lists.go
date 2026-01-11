@@ -6,7 +6,9 @@ import (
 
 func main() {
 	prices := []float64{200, 149.99}
-	updatedPrices := append(prices, 249.99);
+	prices2 := []float64{100, 349.99}
+
+	updatedPrices := append(prices, prices2...)
 
 	fmt.Println("Array Location:", &prices[0], "\nArray value:", prices)
 	fmt.Println("Array Location:", &updatedPrices[0], "\nArray value:", updatedPrices)
