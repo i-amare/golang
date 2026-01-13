@@ -10,8 +10,11 @@ func main() {
 		"Amazon Web Services": "https://aws.com",
 	}
 	fmt.Println(websites)
-	
+
 	websites["Air BnB"] = "https//:airbnb.com"
-	delete(websites, "Google")	
 	fmt.Println(websites)
+
+	for key, val := range websites {
+		fmt.Println(key, val)
+	}
 }
