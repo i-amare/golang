@@ -6,8 +6,12 @@ import (
 
 func main() {
 	websites := map[string]string{
-		"google":              "https://google.com",
+		"Google":              "https://google.com",
 		"Amazon Web Services": "https://aws.com",
 	}
+	fmt.Println(websites)
+	
+	websites["Air BnB"] = "https//:airbnb.com"
+	delete(websites, "Google")
 	fmt.Println(websites)
 }
