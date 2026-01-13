@@ -5,5 +5,9 @@ import (
 )
 
 func main() {
-	fmt.Println("Init message")
+	websites := map[string]string{
+		"google":              "https://google.com",
+		"Amazon Web Services": "https://aws.com",
+	}
+	fmt.Println(websites)
 }
