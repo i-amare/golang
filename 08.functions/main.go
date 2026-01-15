@@ -6,7 +6,7 @@ import (
 
 func main() {
 	numbers := []int{1, 2, 3, 4}
-	
+
 	doubledNumbers := doubleNumbers(&numbers)
 
 	fmt.Println(doubledNumbers)
@@ -15,13 +15,21 @@ func main() {
 func doubleNumbers(numbers *[]int) *[]int {
 	doubledNumbers := make([]int, 0, len(*numbers))
 
-	for _, val := range(*numbers) {
+	double := multiply(2)
+	
+	for _, val := range *numbers {
 		doubledNumbers = append(doubledNumbers, double(val))
 	}
 
-	return &doubledNumbers;
+	return &doubledNumbers
 }
 
-func double(number int) int {
-	return  number * 2
+
+func multiply(factor int) func(number int) int {
+
+	f := func(number int) int {
+		return number * factor
+	}
+
+	return f
 }
