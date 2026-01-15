@@ -13,13 +13,13 @@ func main() {
 
 	doubledNumbers := transformNumbers(&numbers, double)
 	tripledNumbers := transformNumbers(&numbers, triple)
-	numberSquared := transformNumbers(&numbers, func(number int) int {
+	numbersSquared := transformNumbers(&numbers, func(number int) int {
 		return number * number
 	})
 
 	fmt.Println(*doubledNumbers)
 	fmt.Println(*tripledNumbers)
-	fmt.Println(*numberSquared)
+	fmt.Println(*numbersSquared)
 }
 
 func transformNumbers(numbers *[]int, transform transformFn) *[]int {
