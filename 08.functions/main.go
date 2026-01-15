@@ -6,24 +6,21 @@ import (
 
 func main() {
 	numbers := []int{1, 2, 3, 4}
-
-	doubledNumbers := doubleNumbers(&numbers)
+	double := multiply(2)
+	doubledNumbers := transformNumbers(&numbers, double)
 
 	fmt.Println(doubledNumbers)
 }
 
-func doubleNumbers(numbers *[]int) *[]int {
+func transformNumbers(numbers *[]int, transform func(number int) int) *[]int {
 	doubledNumbers := make([]int, 0, len(*numbers))
 
-	double := multiply(2)
-	
 	for _, val := range *numbers {
-		doubledNumbers = append(doubledNumbers, double(val))
+		doubledNumbers = append(doubledNumbers, transform(val))
 	}
 
 	return &doubledNumbers
 }
-
 
 func multiply(factor int) func(number int) int {
 
