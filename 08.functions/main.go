@@ -7,9 +7,13 @@ import (
 func main() {
 	numbers := []int{1, 2, 3, 4}
 	double := multiply(2)
-	doubledNumbers := transformNumbers(&numbers, double)
+	triple := multiply(3)
 
-	fmt.Println(doubledNumbers)
+	doubledNumbers := transformNumbers(&numbers, double)
+	tripledNumbers := transformNumbers(&numbers, triple)
+
+	fmt.Println(*doubledNumbers)
+	fmt.Println(*tripledNumbers)
 }
 
 func transformNumbers(numbers *[]int, transform func(number int) int) *[]int {
