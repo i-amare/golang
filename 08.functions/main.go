@@ -17,20 +17,17 @@ func main() {
 }
 
 func transformNumbers(numbers *[]int, transform func(number int) int) *[]int {
-	doubledNumbers := make([]int, 0, len(*numbers))
+	result := make([]int, 0, len(*numbers))
 
 	for _, val := range *numbers {
-		doubledNumbers = append(doubledNumbers, transform(val))
+		result = append(result, transform(val))
 	}
 
-	return &doubledNumbers
+	return &result
 }
 
 func multiply(factor int) func(number int) int {
-
-	f := func(number int) int {
+	return func(number int) int {
 		return number * factor
 	}
-
-	return f
 }
