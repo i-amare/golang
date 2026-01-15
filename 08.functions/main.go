@@ -4,6 +4,8 @@ import (
 	"fmt"
 )
 
+type transformFn func(number int) int
+
 func main() {
 	numbers := []int{1, 2, 3, 4}
 	double := multiply(2)
@@ -16,7 +18,7 @@ func main() {
 	fmt.Println(*tripledNumbers)
 }
 
-func transformNumbers(numbers *[]int, transform func(number int) int) *[]int {
+func transformNumbers(numbers *[]int, transform transformFn) *[]int {
 	result := make([]int, 0, len(*numbers))
 
 	for _, val := range *numbers {
@@ -26,7 +28,7 @@ func transformNumbers(numbers *[]int, transform func(number int) int) *[]int {
 	return &result
 }
 
-func multiply(factor int) func(number int) int {
+func multiply(factor int) transformFn {
 	return func(number int) int {
 		return number * factor
 	}
