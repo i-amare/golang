@@ -16,8 +16,12 @@ func doubleNumbers(numbers *[]int) *[]int {
 	doubledNumbers := make([]int, 0, len(*numbers))
 
 	for _, val := range(*numbers) {
-		doubledNumbers = append(doubledNumbers, val*2)
+		doubledNumbers = append(doubledNumbers, double(val))
 	}
 
 	return &doubledNumbers;
+}
+
+func double(number int) int {
+	return  number * 2
 }
