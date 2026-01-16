@@ -8,9 +8,21 @@ type Number interface {
 
 func main() {
 	numbers := []int{1, 2, 3}
-	sum := sumArray(&numbers)
+	sum1 := sumArray(&numbers)
+	sum2 := sum(2.4, 3, 4)
 
-	fmt.Println(sum)
+	fmt.Println(sum1)
+	fmt.Println(sum2)
+}
+
+func sum[T Number](numbers ...T) T {
+	var sum T = 0
+
+	for _, val := range numbers {
+		sum += val
+	}
+
+	return sum
 }
 
 func sumArray[T Number](numbers *[]T) T {
