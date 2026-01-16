@@ -8,12 +8,12 @@ type Number interface {
 
 func main() {
 	numbers := []int{1, 2, 3}
-	sum := sumNumbers(&numbers)
+	sum := sumArray(&numbers)
 
 	fmt.Println(sum)
 }
 
-func sumNumbers[T Number](numbers *[]T) T {
+func sumArray[T Number](numbers *[]T) T {
 	var sum T = 0
 
 	for _, val := range *numbers {
