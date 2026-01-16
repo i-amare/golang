@@ -2,6 +2,10 @@ package main
 
 import "fmt"
 
+type Number interface {
+	int | float32 | float64
+}
+
 func main() {
 	numbers := []int{1, 2, 3}
 	sum := sumNumbers(&numbers)
@@ -9,8 +13,8 @@ func main() {
 	fmt.Println(sum)
 }
 
-func sumNumbers(numbers *[]int) int {
-	sum := 0
+func sumNumbers[T Number](numbers *[]T) T {
+	var sum T = 0
 
 	for _, val := range *numbers {
 		sum += val
