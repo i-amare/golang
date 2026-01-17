@@ -4,10 +4,11 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 )
 
-func ReadPrice() []float32 {
-	prices := make([]float32, 0, 50)
+func ReadPrice() []float64 {
+	prices := make([]float64, 0, 50)
 
 	file, err := os.Open("store/prices.txt")
 
@@ -18,8 +19,14 @@ func ReadPrice() []float32 {
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		line := scanner.Text()
-		fmt.Println(line)
+		price, err := strconv.ParseFloat(scanner.Text(), 64)
+
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+		
+		prices = append(prices, price)
 	}
 
 	return prices
