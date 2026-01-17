@@ -14,6 +14,7 @@ func ReadPrice() []float64 {
 
 	if err != nil {
 		fmt.Println(err)
+		return prices
 	}
 	defer file.Close()
 
