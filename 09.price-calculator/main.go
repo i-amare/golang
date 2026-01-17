@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 
 	"example.com/price-calculator/utils"
 )
@@ -15,6 +16,7 @@ func main() {
 
 		for _, taxRate := range(taxRates) {
 			newPrice := val * (1 + (float64(taxRate)/100))
+			newPrice = math.Round(newPrice * 100) / 100
 			postTaxPrices = append(postTaxPrices, newPrice)
 		}
 		
