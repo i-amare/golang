@@ -14,7 +14,7 @@ func main() {
 	prices := utils.ReadPrice()
 
 	for _, val := range prices {
-		calcPostTaxPrices(val, taxRates)
+		calcPostTaxPrices(val, &taxRates)
 	}
 
 	// utils.OutputPrices(taxRates, output)
@@ -25,15 +25,16 @@ func main() {
 	}
 }
 
-func calcPostTaxPrices(val float64, taxRates []int) []float64 {
-	postTaxPrices := make([]float64, 0, len(taxRates))
+func calcPostTaxPrices(val float64, taxRates *[]int) []float64 {
+	postTaxPrices := make([]float64, 0, len(*taxRates))
 
-	for idx, taxRate := range taxRates {
+	for idx, taxRate := range *taxRates {
 		newPrice := val * (1 + (float64(taxRate) / 100))
 		newPrice = math.Round(newPrice*100) / 100
 
 		output[idx] = append(output[idx], newPrice)
 		postTaxPrices = append(postTaxPrices, newPrice)
 	}
+	
 	return postTaxPrices
 }
