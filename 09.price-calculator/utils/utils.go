@@ -8,12 +8,12 @@ import (
 	"strconv"
 )
 
-type p struct {
+type OutputStruct struct {
 	TaxRate int       `json:"taxRate"`
 	Prices  []float64 `json:"prices"`
 }
 
-func ReadPrice() []float64 {
+func ReadPrices() []float64 {
 	prices := make([]float64, 0, 50)
 
 	file, err := os.Open("store/prices.txt")
@@ -40,19 +40,15 @@ func ReadPrice() []float64 {
 }
 
 func OutputPrices(taxRates []int, prices [][]float64) {
-	output := make([]p, 0, len(taxRates))
+	output := make([]OutputStruct, 0, len(taxRates))
 
 	for i, taxRate := range taxRates {
-		data := p{
+		output = append(output, OutputStruct{
 			TaxRate: taxRate,
 			Prices:  prices[i],
-		}
-		fmt.Println(data)
-		output = append(output, data)
+		})
 	}
 
-	fmt.Println(output)
-
-	d, _ := json.MarshalIndent(output, "", "	")
-	os.WriteFile("prices.json", d, 0644)
+	data, _ := json.MarshalIndent(output, "", "	")
+	os.WriteFile("prices.json", data, 0644)
 }

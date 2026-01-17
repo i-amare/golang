@@ -8,7 +8,7 @@ import (
 
 func main() {
 	taxRates := []int{0, 10, 14, 20, 24}
-	prices := utils.ReadPrice()
+	prices := utils.ReadPrices()
 
 	output := calcPrices(taxRates, &prices)
 
