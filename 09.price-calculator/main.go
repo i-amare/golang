@@ -11,12 +11,22 @@ func main() {
 	taxRates := []int{0, 10, 14, 20, 24}
 	prices := utils.ReadPrice()
 
+	output := calcPrices(taxRates, &prices)
+
+	for i, val := range output {
+		fmt.Println("Tax Rate: ", taxRates[i])
+		fmt.Println(val)
+		fmt.Println("")
+	}
+}
+
+func calcPrices(taxRates []int, prices *[]float64) [][]float64 {
 	output := make([][]float64, 5)
 	for i := range output {
-		output[i] = make([]float64, 0, len(prices))
+		output[i] = make([]float64, 0, len(*prices))
 	}
 
-	for _, val := range prices {
+	for _, val := range *prices {
 		postTaxPrices := make([]float64, 0, len(taxRates))
 
 		for idx, taxRate := range taxRates {
@@ -28,9 +38,5 @@ func main() {
 		}
 	}
 
-	for i, val := range output {
-		fmt.Println("Tax Rate: ", taxRates[i])
-		fmt.Println(val)
-		fmt.Println("")
-	}
+	return output
 }
