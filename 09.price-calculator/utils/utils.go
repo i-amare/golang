@@ -32,3 +32,7 @@ func ReadPrice() []float64 {
 
 	return prices
 }
+
+func OutputPrices(taxRates []int, prices [][]float64) {
+
+}
