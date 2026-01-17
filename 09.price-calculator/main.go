@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"math"
 
 	"example.com/price-calculator/utils"
@@ -13,11 +12,7 @@ func main() {
 
 	output := calcPrices(taxRates, &prices)
 
-	for i, val := range output {
-		fmt.Println("Tax Rate: ", taxRates[i])
-		fmt.Println(val)
-		fmt.Println("")
-	}
+	utils.OutputPrices(taxRates, output)
 }
 
 func calcPrices(taxRates []int, prices *[]float64) [][]float64 {
