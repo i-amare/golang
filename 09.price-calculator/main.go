@@ -7,7 +7,7 @@ import (
 	"example.com/price-calculator/utils"
 )
 
-var output = make([][]float64, 5, 5)
+var output = make([][]float64, 5)
 
 func main() {
 	taxRates := []int{0, 10, 14, 20, 24}
@@ -17,7 +17,7 @@ func main() {
 		calcPostTaxPrices(val, taxRates)
 	}
 
-	utils.OutputPrices(taxRates, output)
+	// utils.OutputPrices(taxRates, output)
 	for i, line := range output {
 		fmt.Println("Tax Rate: ", taxRates[i])
 		fmt.Println(line)
