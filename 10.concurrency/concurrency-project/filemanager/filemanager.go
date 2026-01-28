@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"os"
+	"time"
 )
 
 type FileManager struct {
@@ -39,6 +40,7 @@ func (fm FileManager) ReadLines() ([]string, error) {
 }
 
 func (fm FileManager) WriteResult(data interface{}) error {
+	time.Sleep(3 * time.Second)
 	file, err := os.Create(fm.OutputFilePath)
 
 	if err != nil {
