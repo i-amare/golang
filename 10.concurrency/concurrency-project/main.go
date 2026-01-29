@@ -18,8 +18,7 @@ func main() {
 	}
 
 	for i, done := range routines {
-		<- done
-		fmt.Println(i, ": ", done)
+		fmt.Println(i, ": ", <- done)
 	}
 }
 
