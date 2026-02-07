@@ -53,7 +53,7 @@ func (fm FileManager) WriteResult(data interface{}) error {
 	err = encoder.Encode(data)
 
 	if err != nil {
-		return errors.New("Faild to convert data to JSON.")
+		return errors.New("Failed to convert data to JSON.")
 	}
 
 	return nil
