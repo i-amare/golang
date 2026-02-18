@@ -12,7 +12,9 @@ func main() {
 	server := gin.Default()
 
 	server.GET("ping", ping)
+
 	server.GET("vendors", getVendors)
+	server.POST("vendors", createVendor)
 
 	server.Run(":3000")
 }
@@ -28,4 +30,9 @@ func ping(context *gin.Context) {
 func getVendors(context *gin.Context) {
 	v := models.GetAllVendors()
 	context.JSON(http.StatusOK, v)
+}
+
+func createVendor(context *gin.Context) {
+ var vendor models.Vendor
+ context.ShouldBindJSON(&vendor)
 }
