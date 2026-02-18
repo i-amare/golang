@@ -21,7 +21,7 @@ func (v Vendor) Save() {
 	vendors = append(vendors, v)
 }
 
-func GetVendors() []Vendor {
+func GetAllVendors() []Vendor {
 	return vendors
 }
 

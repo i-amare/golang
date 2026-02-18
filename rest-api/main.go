@@ -26,6 +26,6 @@ func ping(context *gin.Context) {
 }
 
 func getVendors(context *gin.Context) {
-	v := models.GetVendors()
+	v := models.GetAllVendors()
 	context.JSON(http.StatusOK, v)
 }
