@@ -40,7 +40,12 @@ func createVendor(context *gin.Context) {
 		res := gin.H{
 			"message": "Unable to parse input data",
 		}
-
 		context.JSON(http.StatusBadRequest, res)
+		return
 	}
+
+	res := gin.H{
+		"message": "Event created",
+	}
+	context.JSON(http.StatusCreated, res)
 }
