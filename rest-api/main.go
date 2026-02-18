@@ -33,6 +33,14 @@ func getVendors(context *gin.Context) {
 }
 
 func createVendor(context *gin.Context) {
- var vendor models.Vendor
- context.ShouldBindJSON(&vendor)
+	var vendor models.Vendor
+	err := context.ShouldBindJSON(&vendor)
+
+	if err != nil {
+		res := gin.H{
+			"message": "Unable to parse input data",
+		}
+
+		context.JSON(http.StatusBadRequest, res)
+	}
 }
