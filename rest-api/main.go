@@ -14,11 +14,15 @@ func main() {
 	server.GET("ping", ping)
 	server.GET("vendors", getVendors)
 
-	server.Run(":8080")
+	server.Run(":3000")
 }
 
 func ping(context *gin.Context) {
-	context.JSON(http.StatusOK, map[string]any{"res": 200, "msg": "hello world"})
+	response := gin.H{
+		"res":     200,
+		"message": "Hello World",
+	}
+	context.JSON(http.StatusOK, response)
 }
 
 func getVendors(context *gin.Context) {
