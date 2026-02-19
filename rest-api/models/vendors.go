@@ -8,7 +8,7 @@ type MenuItem struct {
 }
 
 type Vendor struct {
-	ID          string `binding:"required"`
+	ID          string
 	Name        string `binding:"required"`
 	Description string
 	Menu        []MenuItem

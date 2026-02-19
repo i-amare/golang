@@ -1,7 +1,9 @@
 package main
 
 import (
+	"math/rand"
 	"net/http"
+	"strconv"
 
 	"github.com/i-amare/rest-api/models"
 
@@ -33,12 +35,14 @@ func getVendors(context *gin.Context) {
 }
 
 func createVendor(context *gin.Context) {
-	var vendor models.Vendor
+	id := strconv.FormatInt(int64(rand.Int()), 16)[:6]
+	vendor := models.Vendor{ID: id}
 	err := context.ShouldBindJSON(&vendor)
 
 	if err != nil {
 		res := gin.H{
-			"message": "Unable to parse input data",
+			"message": "Error parsing data",
+			"data":    vendor,
 		}
 		context.JSON(http.StatusBadRequest, res)
 		return
@@ -46,6 +50,7 @@ func createVendor(context *gin.Context) {
 
 	res := gin.H{
 		"message": "Event created",
+		"vendor":  vendor,
 	}
 	context.JSON(http.StatusCreated, res)
 }
