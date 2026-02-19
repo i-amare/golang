@@ -12,7 +12,6 @@ type Vendor struct {
 	Name        string `binding:"required"`
 	Description string
 	Menu        []MenuItem
-	OwnerIDs    []string
 }
 
 var vendors = []Vendor{}
