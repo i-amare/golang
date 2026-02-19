@@ -1,0 +1,41 @@
+package db
+
+import (
+	"database/sql"
+	"fmt"
+
+	_ "github.com/mattn/go-sqlite3"
+)
+
+var DB *sql.DB
+
+func InitDB() {
+	var err error
+	DB, err = sql.Open("sqlite3", "api.db")
+
+	if err != nil {
+		panic("Could not connect to database.")
+	}
+
+	DB.SetMaxOpenConns(10)
+	DB.SetMaxIdleConns(5)
+
+	createTables()
+}
+
+func createTables() {
+	createVendorTable := `
+	CREATE TABLE IF NOT EXISTS vendors (
+		id INTEGER PRIMARY KEY AUTOINCREMENT
+		name TEXT NOT NULL,
+		description TEXT,
+		menu INTEGER FOREIGN KEY
+		ownerID INTEGER
+	)
+	`
+
+	_, err := DB.Exec(createVendorTable)
+	if err != nil {
+		fmt.Println("Could not create table")
+	}
+}
