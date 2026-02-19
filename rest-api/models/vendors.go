@@ -24,7 +24,3 @@ func (v Vendor) Save() {
 func GetAllVendors() []Vendor {
 	return vendors
 }
-
-func (v Vendor) AddVendor() {
-	vendors = append(vendors, v)
-}

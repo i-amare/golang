@@ -35,8 +35,8 @@ func getVendors(context *gin.Context) {
 }
 
 func createVendor(context *gin.Context) {
-	id := strconv.FormatInt(int64(rand.Int()), 16)[:6]
-	vendor := models.Vendor{ID: id}
+	randID := strconv.FormatInt(int64(rand.Int()), 16)[:6]
+	vendor := models.Vendor{ID: randID}
 	err := context.ShouldBindJSON(&vendor)
 
 	if err != nil {
@@ -48,8 +48,10 @@ func createVendor(context *gin.Context) {
 		return
 	}
 
+	vendor.Save()
+
 	res := gin.H{
-		"message": "Event created",
+		"message": "Vendor created",
 		"vendor":  vendor,
 	}
 	context.JSON(http.StatusCreated, res)
