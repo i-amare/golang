@@ -1,3 +1,4 @@
 03.go-packages/*/*.txt
 06.interfaces/*/*.json
 10.concurrency/concurrency-project/result_*.json
+rest-api/tmp
