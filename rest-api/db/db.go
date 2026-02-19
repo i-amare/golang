@@ -24,18 +24,32 @@ func InitDB() {
 }
 
 func createTables() {
+	createMenuItemsTable := `
+	CREATE TABLE IF NOT EXISTS "MenuItems" (
+	"ItemID"	INTEGER NOT NULL UNIQUE,
+	"Name"	TEXT NOT NULL,
+	"Price"	REAL NOT NULL,
+	"VendorID"	INTEGER,
+	PRIMARY KEY("ItemID" AUTOINCREMENT),
+	FOREIGN KEY("VendorID") REFERENCES "Vendor"("ID")
+	)
+	`
 	createVendorTable := `
-	CREATE TABLE IF NOT EXISTS vendors (
-		id INTEGER PRIMARY KEY AUTOINCREMENT
-		name TEXT NOT NULL,
-		description TEXT,
-		menu INTEGER FOREIGN KEY
-		ownerID INTEGER
+	CREATE TABLE IF NOT EXISTS "Vendor" (
+	"ID"	INTEGER NOT NULL UNIQUE,
+	"Name"	TEXT NOT NULL,
+	"Description"	TEXT,
+	PRIMARY KEY("ID" AUTOINCREMENT)
 	)
 	`
 
-	_, err := DB.Exec(createVendorTable)
+	var err error
+	_, err = DB.Exec(createMenuItemsTable)
 	if err != nil {
-		fmt.Println("Could not create table")
+		fmt.Println("Could not menu items table")
+	}
+	_, err = DB.Exec(createVendorTable)
+	if err != nil {
+		fmt.Println("Could not create vendor table")
 	}
 }
