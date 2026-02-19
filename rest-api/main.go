@@ -15,7 +15,7 @@ func main() {
 
 	server.GET("ping", ping)
 
-	server.GET("vendors", getVendors)
+	server.GET("vendors", getAllVendors)
 	server.POST("vendors", createVendor)
 
 	server.Run(":3000")
@@ -29,7 +29,7 @@ func ping(context *gin.Context) {
 	context.JSON(http.StatusOK, response)
 }
 
-func getVendors(context *gin.Context) {
+func getAllVendors(context *gin.Context) {
 	v := models.GetAllVendors()
 	context.JSON(http.StatusOK, v)
 }
