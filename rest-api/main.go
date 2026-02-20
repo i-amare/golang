@@ -30,7 +30,14 @@ func ping(context *gin.Context) {
 }
 
 func getAllVendors(context *gin.Context) {
-	v, _ := models.GetAllVendors()
+	v, err := models.GetAllVendors()
+	if err != nil {
+		res := gin.H{
+			"message": "Error fetching events",
+		}
+		context.JSON(http.StatusInternalServerError, res)
+		return
+	}
 	context.JSON(http.StatusOK, v)
 }
 

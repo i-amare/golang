@@ -49,6 +49,7 @@ func GetAllVendors() ([]Vendor, error) {
 	query := `
 	SELECT * FROM Vendor
 	`
+	
 	res, err := db.DB.Query(query)
 	if err != nil {
 		return nil, err
