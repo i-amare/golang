@@ -45,11 +45,24 @@ func (v Vendor) Save() error {
 	return nil
 }
 
+func GetVendor(id int64) (Vendor, error) {
+	query := `
+	SELECT * FROM Vendor
+	WHERE id = ?
+	`
+
+	var v Vendor
+	res := db.DB.QueryRow(query, id)
+	res.Scan(&v.ID, &v.Name, &v.Description)
+
+	return v, nil
+}
+
 func GetAllVendors() ([]Vendor, error) {
 	query := `
 	SELECT * FROM Vendor
 	`
-	
+
 	res, err := db.DB.Query(query)
 	if err != nil {
 		return nil, err
