@@ -13,3 +13,13 @@ content-type: application/json
 ###
 GET http://localhost:3000/vendors/1
 content-type: application/json
+
+###
+PUT http://localhost:3000/vendors
+content-type: application/json
+
+{
+  "ID": 1,
+  "Name": "Updated Vendor",
+  "Description": "Test updating vendor"
+}

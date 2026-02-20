@@ -79,3 +79,18 @@ func GetAllVendors() ([]Vendor, error) {
 
 	return vendorArr, nil
 }
+
+func UpdateVendor(v Vendor) (any, error) {
+	query := `
+	UPDATE Vendor
+	SET Name = ?, Description = ? 
+	WHERE id = ?
+	`
+
+	res, err := db.DB.Exec(query, v.Name, v.Description, v.ID)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	return res, err
+}
