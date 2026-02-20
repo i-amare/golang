@@ -41,12 +41,27 @@ func (v Vendor) Save() error {
 	id, _ := res.LastInsertId()
 	v.ID = id
 
-	vendors = append(vendors, v)
-	fmt.Println("Vendor saved: ", id)
-
+	fmt.Println("Vendor saved: ", v)
 	return nil
 }
 
-func GetAllVendors() []Vendor {
-	return vendors
+func GetAllVendors() ([]Vendor, error) {
+	query := `
+	SELECT * FROM Vendor
+	`
+	res, err := db.DB.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Close()
+
+	var vendorArr []Vendor
+
+	for res.Next() {
+		var v Vendor
+		res.Scan(&v.ID, &v.Name, &v.Description)
+		vendorArr = append(vendorArr, v)
+	}
+
+	return vendorArr, nil
 }

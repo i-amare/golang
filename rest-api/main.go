@@ -30,7 +30,7 @@ func ping(context *gin.Context) {
 }
 
 func getAllVendors(context *gin.Context) {
-	v := models.GetAllVendors()
+	v, _ := models.GetAllVendors()
 	context.JSON(http.StatusOK, v)
 }
 
