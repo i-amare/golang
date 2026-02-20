@@ -1,9 +1,7 @@
 package main
 
 import (
-	"math/rand"
 	"net/http"
-	"strconv"
 
 	"github.com/i-amare/rest-api/db"
 	"github.com/i-amare/rest-api/models"
@@ -37,8 +35,7 @@ func getAllVendors(context *gin.Context) {
 }
 
 func createVendor(context *gin.Context) {
-	randID := strconv.FormatInt(int64(rand.Int()), 16)[:6]
-	vendor := models.Vendor{ID: randID}
+	var vendor models.Vendor
 	err := context.ShouldBindJSON(&vendor)
 
 	if err != nil {
