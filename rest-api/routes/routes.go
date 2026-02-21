@@ -13,6 +13,7 @@ func InitRoutes(server *gin.Engine) {
 	server.GET("vendors/:id", getVendor)
 	server.POST("vendors", createVendor)
 	server.PUT("vendors", updateVendor)
+	server.DELETE("vendors/:id", deleteVendor)
 }
 
 

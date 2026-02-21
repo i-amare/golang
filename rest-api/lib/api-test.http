@@ -23,3 +23,7 @@ content-type: application/json
   "Name": "Updated Vendor",
   "Description": "Test updating vendor"
 }
+
+###
+DELETE http://localhost:3000/vendors/3
+content-type: application/json

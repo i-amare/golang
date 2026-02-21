@@ -94,3 +94,18 @@ func UpdateVendor(v Vendor) (any, error) {
 
 	return res, err
 }
+
+func DeleteVendor(id int64) error {
+	query := `
+	DELETE FROM Vendor
+	WHERE id = ?
+ 	`
+
+	_, err := db.DB.Exec(query, id)
+	if err != nil {
+		fmt.Println(id)
+		return err
+	}
+
+	return nil
+}

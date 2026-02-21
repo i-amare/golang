@@ -88,3 +88,31 @@ func updateVendor(context *gin.Context) {
 	}
 	context.JSON(http.StatusAccepted, res)
 }
+
+func deleteVendor(context *gin.Context) {
+	id, err := strconv.ParseInt(context.Param("id"), 10, 64)
+	if err != nil {
+		res := gin.H{
+			"message": "Error parsing data",
+			"data": gin.H{
+				"param": context.Params,
+			},
+		}
+		context.JSON(http.StatusBadRequest, res)
+		return
+	}
+
+	err = models.DeleteVendor(id)
+	if err != nil {
+		res := gin.H{
+			"message": "Error deleting database entry",
+		}
+		context.JSON(http.StatusInternalServerError, res)
+		return
+	}
+
+	res := gin.H{
+		"message": "Vendor deleted",
+	}
+	context.JSON(http.StatusOK, res)
+}
