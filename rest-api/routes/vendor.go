@@ -41,9 +41,18 @@ func getVendor(context *gin.Context) {
 		return
 	}
 
-	v, _ := models.GetVendor(id)
+	v, err := models.GetVendor(id)
+	if err != nil {
+		res := gin.H{
+			"message": "Vendor not found",
+		}
+		context.JSON(http.StatusBadRequest, res)
+		return
+	}
+
 	res := gin.H{
-		"vendor": v,
+		"message": "Vendor found",
+		"vendor":  v,
 	}
 	context.JSON(http.StatusOK, res)
 }

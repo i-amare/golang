@@ -53,7 +53,10 @@ func GetVendor(id int64) (Vendor, error) {
 
 	var v Vendor
 	res := db.DB.QueryRow(query, id)
-	res.Scan(&v.ID, &v.Name, &v.Description)
+	err := res.Scan(&v.ID, &v.Name, &v.Description)
+	if err != nil {
+		return Vendor{}, err
+	}
 
 	return v, nil
 }
