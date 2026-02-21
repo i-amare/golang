@@ -9,15 +9,8 @@ import (
 )
 
 func createVendor(context *gin.Context) {
-	var v models.Vendor
-	err := context.ShouldBindJSON(&v)
-
+	v, err := parseVendorData(context)
 	if err != nil {
-		res := gin.H{
-			"message": "Error parsing data",
-			"data":    v,
-		}
-		context.JSON(http.StatusBadRequest, res)
 		return
 	}
 
@@ -31,22 +24,13 @@ func createVendor(context *gin.Context) {
 }
 
 func getVendor(context *gin.Context) {
-	id, err := strconv.ParseInt(context.Param("id"), 10, 64)
-
+	id, err := parseVendorID(context)
 	if err != nil {
-		res := gin.H{
-			"message": "Error parsing vendor ID",
-		}
-		context.JSON(http.StatusBadRequest, res)
 		return
 	}
 
-	v, err := models.GetVendor(id)
+	v, err := fetchVendor(id, context)
 	if err != nil {
-		res := gin.H{
-			"message": "Vendor not found",
-		}
-		context.JSON(http.StatusBadRequest, res)
 		return
 	}
 
@@ -70,33 +54,18 @@ func getAllVendors(context *gin.Context) {
 }
 
 func updateVendor(context *gin.Context) {
-	id, err := strconv.ParseInt(context.Param("id"), 10, 64)
-
+	id, err := parseVendorID(context)
 	if err != nil {
-		res := gin.H{
-			"message": "Error parsing vendor ID",
-		}
-		context.JSON(http.StatusBadRequest, res)
 		return
 	}
 
-	var v = models.Vendor{ID: id}
-	err = context.ShouldBindJSON(&v)
+	_, err = fetchVendor(id, context)
 	if err != nil {
-		res := gin.H{
-			"message": "Error parsing data",
-			"data":    v,
-		}
-		context.JSON(http.StatusBadRequest, res)
 		return
 	}
 
-	_, err = models.GetVendor(id)
+	v, err := parseVendorData(context)
 	if err != nil {
-		res := gin.H{
-			"message": "Vendor not found",
-		}
-		context.JSON(http.StatusBadRequest, res)
 		return
 	}
 
@@ -117,24 +86,13 @@ func updateVendor(context *gin.Context) {
 }
 
 func deleteVendor(context *gin.Context) {
-	id, err := strconv.ParseInt(context.Param("id"), 10, 64)
+	id, err := parseVendorID(context)
 	if err != nil {
-		res := gin.H{
-			"message": "Error parsing vendor ID",
-			"data": gin.H{
-				"param": context.Params,
-			},
-		}
-		context.JSON(http.StatusBadRequest, res)
 		return
 	}
 
-	_, err = models.GetVendor(id)
+	_, err = fetchVendor(id, context)
 	if err != nil {
-		res := gin.H{
-			"message": "Error finding vendor",
-		}
-		context.JSON(http.StatusBadRequest, res)
 		return
 	}
 
@@ -151,4 +109,48 @@ func deleteVendor(context *gin.Context) {
 		"message": "Vendor deleted",
 	}
 	context.JSON(http.StatusOK, res)
+}
+
+func parseVendorID(context *gin.Context) (int64, error) {
+	id, err := strconv.ParseInt(context.Param("id"), 10, 64)
+	if err != nil {
+		res := gin.H{
+			"message": "Error parsing vendor ID",
+			"params":  context.Params,
+		}
+		context.JSON(http.StatusBadRequest, res)
+		return -1, err
+	}
+
+	return id, nil
+}
+
+func fetchVendor(id int64, context *gin.Context) (models.Vendor, error) {
+	var v models.Vendor
+	v, err := models.GetVendor(id)
+	if err != nil {
+		res := gin.H{
+			"message": "Error finding vendor",
+			"id": id,
+		}
+		context.JSON(http.StatusBadRequest, res)
+		return v, err
+	}
+
+	return v, nil
+}
+
+func parseVendorData(context *gin.Context) (models.Vendor, error) {
+	var v models.Vendor
+	err := context.ShouldBindJSON(&v)
+	if err != nil {
+		res := gin.H{
+			"message": "Error parsing data",
+			"data":    v,
+		}
+		context.JSON(http.StatusBadRequest, res)
+		return v, err
+	}
+
+	return v, nil
 }
