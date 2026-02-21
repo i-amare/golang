@@ -8,14 +8,13 @@ import (
 
 func InitRoutes(server *gin.Engine) {
 	server.GET("/", ping)
-	
+
 	server.GET("vendors", getAllVendors)
 	server.GET("vendors/:id", getVendor)
 	server.POST("vendors", createVendor)
-	server.PUT("vendors", updateVendor)
+	server.PUT("vendors/:id", updateVendor)
 	server.DELETE("vendors/:id", deleteVendor)
 }
-
 
 func ping(context *gin.Context) {
 	response := gin.H{

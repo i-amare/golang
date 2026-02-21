@@ -15,11 +15,10 @@ GET http://localhost:3000/vendors/2
 content-type: application/json
 
 ###
-PUT http://localhost:3000/vendors
+PUT http://localhost:3000/vendors/3
 content-type: application/json
 
 {
-  "ID": 1,
   "Name": "Updated Vendor",
   "Description": "Test updating vendor"
 }

@@ -70,13 +70,31 @@ func getAllVendors(context *gin.Context) {
 }
 
 func updateVendor(context *gin.Context) {
-	var v models.Vendor
-	err := context.ShouldBindJSON(&v)
+	id, err := strconv.ParseInt(context.Param("id"), 10, 64)
 
+	if err != nil {
+		res := gin.H{
+			"message": "Error parsing vendor ID",
+		}
+		context.JSON(http.StatusBadRequest, res)
+		return
+	}
+
+	var v = models.Vendor{ID: id}
+	err = context.ShouldBindJSON(&v)
 	if err != nil {
 		res := gin.H{
 			"message": "Error parsing data",
 			"data":    v,
+		}
+		context.JSON(http.StatusBadRequest, res)
+		return
+	}
+
+	_, err = models.GetVendor(id)
+	if err != nil {
+		res := gin.H{
+			"message": "Vendor not found",
 		}
 		context.JSON(http.StatusBadRequest, res)
 		return
