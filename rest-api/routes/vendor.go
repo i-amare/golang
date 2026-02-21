@@ -120,10 +120,19 @@ func deleteVendor(context *gin.Context) {
 	id, err := strconv.ParseInt(context.Param("id"), 10, 64)
 	if err != nil {
 		res := gin.H{
-			"message": "Error parsing data",
+			"message": "Error parsing vendor ID",
 			"data": gin.H{
 				"param": context.Params,
 			},
+		}
+		context.JSON(http.StatusBadRequest, res)
+		return
+	}
+
+	_, err = models.GetVendor(id)
+	if err != nil {
+		res := gin.H{
+			"message": "Error finding vendor",
 		}
 		context.JSON(http.StatusBadRequest, res)
 		return
