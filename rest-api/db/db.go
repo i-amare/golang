@@ -24,6 +24,14 @@ func InitDB() {
 }
 
 func createTables() {
+	createUsersTable := `
+	CREATE TABLE IF NOT EXISTS "Users" (
+	"ID" INTEGER PRIMARY KEY AUTOINCREMENT,
+	"Email" TEXT NOT NULL UNIQUE,
+	"Password" TEXT NOT NULL,
+	)
+	`
+
 	createMenuItemsTable := `
 	CREATE TABLE IF NOT EXISTS "MenuItems" (
 	"ItemID"	INTEGER NOT NULL UNIQUE,
@@ -39,11 +47,18 @@ func createTables() {
 	"ID"	INTEGER NOT NULL UNIQUE,
 	"Name"	TEXT NOT NULL,
 	"Description"	TEXT,
+	"OwnerID"
+	FOREIGN KEY("OwnerID") REFERENCES "Users"("ID")
 	PRIMARY KEY("ID" AUTOINCREMENT)
 	)
 	`
 
 	var err error
+	_, err = DB.Exec(createUsersTable)
+	if err != nil {
+		fmt.Println("Could not create users table")
+	}
+
 	_, err = DB.Exec(createMenuItemsTable)
 	if err != nil {
 		fmt.Println("Could not menu items table")
