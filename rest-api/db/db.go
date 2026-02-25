@@ -61,7 +61,7 @@ func createTables() {
 
 	_, err = DB.Exec(createMenuItemsTable)
 	if err != nil {
-		fmt.Println("Could not menu items table")
+		fmt.Println("Could not create menu items table")
 	}
 	_, err = DB.Exec(createVendorTable)
 	if err != nil {
