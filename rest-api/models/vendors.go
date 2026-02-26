@@ -24,7 +24,7 @@ var vendors = []Vendor{}
 
 func (v Vendor) Save() error {
 	query := `
-	INSERT INTO Vendor(Name, Description)
+	INSERT INTO Vendors(Name, Description)
 	VALUES (?, ?)
 	`
 	stmt, err := db.DB.Prepare(query)
@@ -47,7 +47,7 @@ func (v Vendor) Save() error {
 
 func GetVendor(id int64) (Vendor, error) {
 	query := `
-	SELECT * FROM Vendor
+	SELECT * FROM Vendors
 	WHERE id = ?
 	`
 
@@ -63,7 +63,7 @@ func GetVendor(id int64) (Vendor, error) {
 
 func GetAllVendors() ([]Vendor, error) {
 	query := `
-	SELECT * FROM Vendor
+	SELECT * FROM Vendors
 	`
 
 	res, err := db.DB.Query(query)
@@ -85,7 +85,7 @@ func GetAllVendors() ([]Vendor, error) {
 
 func UpdateVendor(v Vendor) (any, error) {
 	query := `
-	UPDATE Vendor
+	UPDATE Vendors
 	SET Name = ?, Description = ? 
 	WHERE id = ?
 	`
@@ -100,7 +100,7 @@ func UpdateVendor(v Vendor) (any, error) {
 
 func DeleteVendor(id int64) error {
 	query := `
-	DELETE FROM Vendor
+	DELETE FROM Vendors
 	WHERE id = ?
  	`
 
