@@ -14,7 +14,15 @@ func createVendor(context *gin.Context) {
 		return
 	}
 
-	v.Save()
+	err = v.Save()
+	if err != nil {
+		res := gin.H{
+			"message": err.Error(),
+			"error":   err,
+		}
+		context.JSON(http.StatusInternalServerError, res)
+		return
+	}
 
 	res := gin.H{
 		"message": "Vendor created",
@@ -69,6 +77,7 @@ func updateVendor(context *gin.Context) {
 		return
 	}
 
+	v.ID = id
 	_, err = models.UpdateVendor(v)
 	if err != nil {
 		res := gin.H{
@@ -131,7 +140,7 @@ func fetchVendor(id int64, context *gin.Context) (models.Vendor, error) {
 	if err != nil {
 		res := gin.H{
 			"message": "Error finding vendor",
-			"id": id,
+			"id":      id,
 		}
 		context.JSON(http.StatusBadRequest, res)
 		return v, err

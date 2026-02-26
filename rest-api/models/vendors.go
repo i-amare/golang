@@ -22,9 +22,9 @@ type Vendor struct {
 
 var vendors = []Vendor{}
 
-func (v Vendor) Save() error {
+func (v *Vendor) Save() error {
 	query := `
-	INSERT INTO Vendors(Name, Description)
+	INSERT INTO Vendors (Name, Description)
 	VALUES (?, ?)
 	`
 	stmt, err := db.DB.Prepare(query)
@@ -38,7 +38,10 @@ func (v Vendor) Save() error {
 		return err
 	}
 
-	id, _ := res.LastInsertId()
+	id, err := res.LastInsertId()
+	if err != nil {
+		return err
+	}
 	v.ID = id
 
 	fmt.Println("Vendor saved: ", v)
@@ -47,8 +50,9 @@ func (v Vendor) Save() error {
 
 func GetVendor(id int64) (Vendor, error) {
 	query := `
-	SELECT * FROM Vendors
-	WHERE id = ?
+	SELECT ID, Name, Description
+	FROM Vendors
+	WHERE ID = ?
 	`
 
 	var v Vendor
@@ -63,7 +67,8 @@ func GetVendor(id int64) (Vendor, error) {
 
 func GetAllVendors() ([]Vendor, error) {
 	query := `
-	SELECT * FROM Vendors
+	SELECT ID, Name, Description
+	FROM Vendors
 	`
 
 	res, err := db.DB.Query(query)
@@ -76,8 +81,14 @@ func GetAllVendors() ([]Vendor, error) {
 
 	for res.Next() {
 		var v Vendor
-		res.Scan(&v.ID, &v.Name, &v.Description)
+		if err := res.Scan(&v.ID, &v.Name, &v.Description); err != nil {
+			return nil, err
+		}
 		vendorArr = append(vendorArr, v)
+	}
+
+	if err := res.Err(); err != nil {
+		return nil, err
 	}
 
 	return vendorArr, nil
