@@ -25,10 +25,11 @@ func InitDB() {
 
 func createTables() {
 	createUsersTable := `
-	CREATE TABLE IF NOT EXISTS "Users" (
-	"ID" INTEGER PRIMARY KEY AUTOINCREMENT,
-	"Email" TEXT NOT NULL UNIQUE,
-	"Password" TEXT NOT NULL,
+	CREATE TABLE "Users" (
+	"ID"	INTEGER NOT NULL,
+	"Email"	TEXT NOT NULL UNIQUE,
+	"Password"	TEXT NOT NULL,
+	PRIMARY KEY("ID" AUTOINCREMENT)
 	)
 	`
 
@@ -43,14 +44,14 @@ func createTables() {
 	)
 	`
 	createVendorTable := `
-	CREATE TABLE IF NOT EXISTS "Vendor" (
-	"ID"	INTEGER NOT NULL UNIQUE,
+	CREATE TABLE "Vendors" (
+	"ID"	INTEGER NOT NULL,
 	"Name"	TEXT NOT NULL,
-	"Description"	TEXT,
-	"OwnerID"
+	"Description"	TEXT NOT NULL,
+	"OwnerID"	INTEGER NOT NULL,
+	PRIMARY KEY("ID" AUTOINCREMENT),
 	FOREIGN KEY("OwnerID") REFERENCES "Users"("ID")
-	PRIMARY KEY("ID" AUTOINCREMENT)
-	)
+)
 	`
 
 	var err error
