@@ -14,6 +14,8 @@ func InitRoutes(server *gin.Engine) {
 	server.POST("vendors", createVendor)
 	server.PUT("vendors/:id", updateVendor)
 	server.DELETE("vendors/:id", deleteVendor)
+
+	server.POST("users", createUser)
 }
 
 func ping(context *gin.Context) {
