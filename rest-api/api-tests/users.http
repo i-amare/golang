@@ -2,6 +2,10 @@ POST http://localhost:3000/users
 content-type: application/json
 
 {
-  "Email": "mail1@mail.com",
+  "Email": "mail2@mail.com",
   "Password": "FakePass"
 }
+
+###
+GET http://localhost:3000/users
+content-type: application/json

@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -28,6 +29,23 @@ func createUser(context *gin.Context) {
 		"vendor":  u,
 	}
 	context.JSON(http.StatusCreated, res)
+}
+
+func getAllUsers(context *gin.Context) {
+	usersArr, err := models.GetAllUsers()
+	if err != nil {
+		res := gin.H{
+			"message":  "Error fetching users",
+			"error":    err.Error(),
+			"detailed": err,
+		}
+		context.JSON(http.StatusInternalServerError, res)
+		return
+	}
+
+	fmt.Println("Printing")
+
+	context.JSON(http.StatusOK, usersArr)
 }
 
 func parseUserData(context *gin.Context) (models.User, error) {
