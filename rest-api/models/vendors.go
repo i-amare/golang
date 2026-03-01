@@ -104,7 +104,7 @@ func GetAllVendors() ([]Vendor, error) {
 	for res.Next() {
 		var v Vendor
 		if err := res.Scan(&v.ID, &v.Name, &v.Description); err != nil {
-			return nil, err
+			continue
 		}
 
 		menu := []MenuItem{}
