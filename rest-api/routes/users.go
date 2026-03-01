@@ -6,11 +6,21 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/i-amare/rest-api/models"
+	"github.com/i-amare/rest-api/utils"
 )
 
 func createUser(context *gin.Context) {
 	u, err := parseUserData(context)
 	if err != nil {
+		return
+	}
+
+	u.Password, err = utils.HashPassword(u.Password)
+	if err != nil {
+		res := gin.H{
+			"message": "Error parsing password",
+		}
+		context.JSON(http.StatusInternalServerError, res)
 		return
 	}
 
