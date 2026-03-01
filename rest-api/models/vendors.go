@@ -55,6 +55,31 @@ func GetVendor(id int64) (Vendor, error) {
 		return Vendor{}, err
 	}
 
+	query = `
+	SELECT ItemID, Name, Price 
+	FROM MenuItems
+	WHERE VendorID = ?
+	`
+
+	menu := []MenuItem{}
+	row, err := db.DB.Query(query, id)
+	if err != nil {
+		return v, nil
+	}
+	defer row.Close()
+
+	for row.Next() {
+		var m MenuItem
+		if err := row.Scan(&m.ID, &m.Name, &m.Price); err != nil {
+			fmt.Println("MenuItem: ", m)
+			fmt.Println(err.Error())
+			fmt.Println("s")
+			continue
+		}
+		menu = append(menu, m)
+	}
+	v.Menu = menu
+
 	return v, nil
 }
 
