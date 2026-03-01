@@ -1,6 +1,7 @@
 package models
 
 import (
+	"database/sql"
 	"fmt"
 
 	"github.com/i-amare/rest-api/db"
@@ -54,23 +55,11 @@ func GetVendor(id int64) (Vendor, error) {
 	WHERE VendorID = ?
 	`
 
-	menu := []MenuItem{}
-	row, err := db.DB.Query(query, id)
+	stmt, err := db.DB.Prepare(query)
 	if err != nil {
-		return v, nil
+		return v, err
 	}
-	defer row.Close()
-
-	for row.Next() {
-		var m MenuItem
-		if err := row.Scan(&m.ID, &m.Name, &m.Price); err != nil {
-			fmt.Println("MenuItem: ", m)
-			fmt.Println(err.Error())
-			fmt.Println("s")
-			continue
-		}
-		menu = append(menu, m)
-	}
+	menu, err := parseMenu(id, stmt)
 	v.Menu = menu
 
 	return v, nil
@@ -107,22 +96,9 @@ func GetAllVendors() ([]Vendor, error) {
 			continue
 		}
 
-		menu := []MenuItem{}
-		row, err := stmt.Query(v.ID)
+		menu, err := parseMenu(v.ID, stmt)
 		if err != nil {
 			continue
-		}
-		defer row.Close()
-
-		for row.Next() {
-			var m MenuItem
-			if err := row.Scan(&m.ID, &m.Name, &m.Price); err != nil {
-				fmt.Println("MenuItem: ", m)
-				fmt.Println(err.Error())
-				fmt.Println("s")
-				continue
-			}
-			menu = append(menu, m)
 		}
 		v.Menu = menu
 
@@ -164,4 +140,26 @@ func DeleteVendor(id int64) error {
 	}
 
 	return nil
+}
+
+func parseMenu(id int64, stmt *sql.Stmt) ([]MenuItem, error) {
+	menu := []MenuItem{}
+	row, err := stmt.Query(id)
+	if err != nil {
+		return []MenuItem{}, err
+	}
+	defer row.Close()
+
+	for row.Next() {
+		var m MenuItem
+		if err := row.Scan(&m.ID, &m.Name, &m.Price); err != nil {
+			fmt.Println("MenuItem: ", m)
+			fmt.Println(err.Error())
+			fmt.Println("s")
+			continue
+		}
+		menu = append(menu, m)
+	}
+
+	return menu, nil
 }
