@@ -90,11 +90,42 @@ func GetAllVendors() ([]Vendor, error) {
 
 	var vendorArr []Vendor
 
+	query = `
+	SELECT ItemID, Name, Price 
+	FROM MenuItems
+	WHERE VendorID = ?
+	`
+
+	stmt, err := db.DB.Prepare(query)
+	if err != nil {
+		return []Vendor{}, err
+	}
+
 	for res.Next() {
 		var v Vendor
 		if err := res.Scan(&v.ID, &v.Name, &v.Description); err != nil {
 			return nil, err
 		}
+
+		menu := []MenuItem{}
+		row, err := stmt.Query(v.ID)
+		if err != nil {
+			continue
+		}
+		defer row.Close()
+
+		for row.Next() {
+			var m MenuItem
+			if err := row.Scan(&m.ID, &m.Name, &m.Price); err != nil {
+				fmt.Println("MenuItem: ", m)
+				fmt.Println(err.Error())
+				fmt.Println("s")
+				continue
+			}
+			menu = append(menu, m)
+		}
+		v.Menu = menu
+
 		vendorArr = append(vendorArr, v)
 	}
 
