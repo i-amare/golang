@@ -13,20 +13,13 @@ type Vendor struct {
 	Menu        []MenuItem
 }
 
-var vendors = []Vendor{}
-
 func (v *Vendor) Save() error {
 	query := `
 	INSERT INTO Vendors (Name, Description)
 	VALUES (?, ?)
 	`
-	stmt, err := db.DB.Prepare(query)
-	if err != nil {
-		return err
-	}
-	defer stmt.Close()
 
-	res, err := stmt.Exec(v.Name, v.Description)
+	res, err := db.DB.Exec(query, v.Name, v.Description)
 	if err != nil {
 		return err
 	}
