@@ -6,13 +6,6 @@ import (
 	"github.com/i-amare/rest-api/db"
 )
 
-type MenuItem struct {
-	ID          string
-	Name        string
-	Description string
-	Price       float32
-}
-
 type Vendor struct {
 	ID          int64
 	Name        string `binding:"required"`
