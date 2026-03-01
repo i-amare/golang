@@ -13,7 +13,7 @@ type MenuItem struct {
 	VendorID int64
 }
 
-func (m MenuItem) Save() error {
+func (m *MenuItem) Save() error {
 	query := `
 	INSERT INTO MenuItems (Name, Price, VendorID)
 	VALUES (?, ?, ?)
@@ -25,6 +25,7 @@ func (m MenuItem) Save() error {
 	}
 
 	id, err := res.LastInsertId()
+	fmt.Println("ID: ", id)
 	m.ID = id
 	if err != nil {
 		return err

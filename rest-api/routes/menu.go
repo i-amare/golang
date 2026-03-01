@@ -32,11 +32,13 @@ func createMenuItem(context *gin.Context) {
 
 func parseMenuData(context *gin.Context) (models.MenuItem, error) {
 	var m models.MenuItem
-	err := context.ShouldBindJSON(m)
+	err := context.ShouldBindJSON(&m)
 	if err != nil {
 		res := gin.H{
 			"message": "Error parsing data",
 			"data":    m,
+			"error":   err.Error(),
+			"err":     err,
 		}
 		context.JSON(http.StatusBadRequest, res)
 		return models.MenuItem{}, err

@@ -17,6 +17,8 @@ func InitRoutes(server *gin.Engine) {
 
 	server.POST("users", createUser)
 	server.GET("users", getAllUsers)
+
+	server.POST("menu", createMenuItem)
 }
 
 func ping(context *gin.Context) {
