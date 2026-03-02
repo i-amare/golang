@@ -15,7 +15,7 @@ func InitRoutes(server *gin.Engine) {
 	server.PUT("vendors/:id", updateVendor)
 	server.DELETE("vendors/:id", deleteVendor)
 
-	server.POST("users", createUser)
+	server.POST("signup", createUser)
 	server.GET("users", getAllUsers)
 
 	server.POST("menu", createMenuItem)
