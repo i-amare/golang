@@ -58,6 +58,36 @@ func getAllUsers(context *gin.Context) {
 	context.JSON(http.StatusOK, usersArr)
 }
 
+func loginUser(context *gin.Context) {
+	u, err := parseUserData(context)
+	if err != nil {
+		return
+	}
+
+	isValid, err := u.ValidateCredentials()
+	if err != nil {
+		res := gin.H{
+			"message": err.Error(),
+			"error":   err,
+		}
+		context.JSON(http.StatusInternalServerError, res)
+	}
+
+	var res gin.H
+	if isValid {
+		res = gin.H{
+			"message": "Password is valid",
+			"details": u,
+		}
+	} else {
+		res = gin.H{
+			"message": "Password is invalid",
+			"details": u,
+		}
+	}
+	context.JSON(http.StatusOK, res)
+}
+
 func parseUserData(context *gin.Context) (models.User, error) {
 	var u models.User
 	err := context.ShouldBindJSON(&u)

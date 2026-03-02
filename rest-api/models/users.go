@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/i-amare/rest-api/db"
+	"github.com/i-amare/rest-api/utils"
 )
 
 type User struct {
@@ -31,6 +32,23 @@ func (u *User) Save() error {
 
 	fmt.Println("User saved successfully")
 	return nil
+}
+
+func (u *User) ValidateCredentials() (bool, error) {
+	query := `
+	SELECT Password
+	FROM Users
+	WHERE Email = ?
+	`
+
+	res := db.DB.QueryRow(query, u.Email)
+	var hashedPassword string
+	err := res.Scan(&hashedPassword)
+	if err != nil {
+		return false, err
+	}
+
+	return utils.ValidatePassword(u.Password, hashedPassword), nil
 }
 
 func GetAllUsers() ([]User, error) {
