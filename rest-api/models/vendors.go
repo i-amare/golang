@@ -59,7 +59,11 @@ func GetVendor(id int64) (Vendor, error) {
 	if err != nil {
 		return v, err
 	}
+
 	menu, err := parseMenu(id, stmt)
+	if err != nil {
+		return v, err
+	}
 	v.Menu = menu
 
 	return v, nil
@@ -106,7 +110,7 @@ func GetAllVendors() ([]Vendor, error) {
 	}
 
 	if err := res.Err(); err != nil {
-		return nil, err
+		return vendorArr, err
 	}
 
 	return vendorArr, nil
