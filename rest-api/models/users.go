@@ -42,12 +42,13 @@ func (u *User) GetUserID() (int64, error) {
   `
 
 	res := db.DB.QueryRow(query, u.Email)
-	err := res.Scan(&u.ID)
+	var id int64
+	err := res.Scan(&id)
 	if err != nil {
 		return -1, err
 	}
 
-	return u.ID, nil
+	return id, nil
 }
 
 func (u *User) ValidateCredentials() (bool, error) {

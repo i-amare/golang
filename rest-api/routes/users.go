@@ -64,6 +64,16 @@ func loginUser(context *gin.Context) {
 		return
 	}
 
+	u.ID, err = u.GetUserID()
+	if err != nil {
+		res := gin.H{
+			"message": err.Error(),
+			"error":   err,
+		}
+		context.JSON(http.StatusInternalServerError, res)
+		return
+	}
+
 	isValid, err := u.ValidateCredentials()
 	if err != nil {
 		res := gin.H{
@@ -73,17 +83,29 @@ func loginUser(context *gin.Context) {
 		context.JSON(http.StatusInternalServerError, res)
 	}
 
-	var res gin.H
-	if isValid {
-		res = gin.H{
-			"message": "Password is valid",
-			"details": u,
-		}
-	} else {
-		res = gin.H{
+	if !isValid {
+		res := gin.H{
 			"message": "Password is invalid",
 			"details": u,
 		}
+		context.JSON(http.StatusBadRequest, res)
+		return
+	}
+
+	authToken, err := utils.GenerateAuthToken(u.Email, u.ID)
+	if err != nil {
+		res := gin.H{
+			"message": err.Error(),
+			"error":   err,
+		}
+		context.JSON(http.StatusInternalServerError, res)
+		return
+	}
+
+	res := gin.H{
+		"message":   "Password is valid",
+		"details":   u,
+		"authToken": authToken,
 	}
 	context.JSON(http.StatusOK, res)
 }
