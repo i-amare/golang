@@ -34,6 +34,22 @@ func (u *User) Save() error {
 	return nil
 }
 
+func (u *User) GetUserID() (int64, error) {
+	query := `
+ 	SELECT ID
+ 	FROM Users
+ 	WHERE Email = ?
+  `
+
+	res := db.DB.QueryRow(query, u.Email)
+	err := res.Scan(&u.ID)
+	if err != nil {
+		return -1, err
+	}
+
+	return u.ID, nil
+}
+
 func (u *User) ValidateCredentials() (bool, error) {
 	query := `
 	SELECT Password
