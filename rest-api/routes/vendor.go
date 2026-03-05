@@ -9,6 +9,16 @@ import (
 )
 
 func createVendor(context *gin.Context) {
+	token := context.Request.Header.Get("Authorization")
+
+	if token == "" {
+		res := gin.H{
+			"message": "No auth token provided",
+		}
+		context.JSON(http.StatusUnauthorized, res)
+		return
+	}
+	
 	v, err := parseVendorData(context)
 	if err != nil {
 		return
