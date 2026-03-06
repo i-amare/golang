@@ -35,8 +35,10 @@ func VerifyAuthToken(token string) error {
 		return errors.New("Authorisation token is invalid")
 	}
 
-	claims, ok := parsedToken.Claims.(*jwt.MapClaims)
+	_, ok := parsedToken.Claims.(*jwt.MapClaims)
 	if !ok {
 		return errors.New("Token claims could not be parsed")
 	}
+
+	return nil
 }
