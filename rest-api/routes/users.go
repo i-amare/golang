@@ -34,9 +34,19 @@ func createUser(context *gin.Context) {
 		return
 	}
 
+	authToken, err := utils.GenerateAuthToken(u.Email, u.ID)
+	if err != nil {
+		res := gin.H{
+			"message": "User created, error generating auth token",
+			"vendor":  u,
+		}
+		context.JSON(http.StatusInternalServerError, res)
+	}
+
 	res := gin.H{
-		"message": "User created",
-		"vendor":  u,
+		"message":   "User created",
+		"vendor":    u,
+		"authToken": authToken,
 	}
 	context.JSON(http.StatusCreated, res)
 }
