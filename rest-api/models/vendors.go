@@ -12,15 +12,16 @@ type Vendor struct {
 	Name        string `binding:"required"`
 	Description string
 	Menu        []MenuItem
+	OwnerID     int64
 }
 
 func (v *Vendor) Save() error {
 	query := `
-	INSERT INTO Vendors (Name, Description)
-	VALUES (?, ?)
+	INSERT INTO Vendors (Name, Description, OwnerID)
+	VALUES (?, ?, ?)
 	`
 
-	res, err := db.DB.Exec(query, v.Name, v.Description)
+	res, err := db.DB.Exec(query, v.Name, v.Description, v.OwnerID)
 	if err != nil {
 		return err
 	}

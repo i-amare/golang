@@ -20,16 +20,18 @@ func createVendor(context *gin.Context) {
 		return
 	}
 
-	err := utils.VerifyAuthToken(token)
+	id, err := utils.VerifyAuthToken(token)
 	if err != nil {
 		res := gin.H{
 			"message": "Not authorised",
+			"error":   err.Error(),
 		}
 		context.JSON(http.StatusUnauthorized, res)
 		return
 	}
 
 	v, err := parseVendorData(context)
+	v.OwnerID = id
 	if err != nil {
 		return
 	}
@@ -176,6 +178,7 @@ func parseVendorData(context *gin.Context) (models.Vendor, error) {
 		res := gin.H{
 			"message": "Error parsing data",
 			"data":    v,
+			"error":   err.Error(),
 		}
 		context.JSON(http.StatusBadRequest, res)
 		return v, err
