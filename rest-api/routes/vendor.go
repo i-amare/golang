@@ -23,7 +23,7 @@ func createVendor(context *gin.Context) {
 	err := utils.VerifyAuthToken(token)
 	if err != nil {
 		res := gin.H{
-			"message": "Noth authorised",
+			"message": "Not authorised",
 		}
 		context.JSON(http.StatusUnauthorized, res)
 		return
