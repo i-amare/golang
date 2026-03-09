@@ -1,8 +1,9 @@
 POST http://localhost:3000/vendors
 content-type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQG1haWwuY29tIiwiZXhwIjoxNzczNjkwMzg1LCJ1c2VySUQiOjl9.z_ivn0e6XOk3Ez5z08mGbmY2m8a9W4F_MJc4cN4WZCw
 
 {
-  "Name": "Vendor",
+  "Name": "New Vendor",
   "Description": "Test Vendor"
 }
 
