@@ -20,7 +20,18 @@ func GenerateAuthToken(email string, userID int64) (string, error) {
 	return token.SignedString([]byte(secretKey))
 }
 
-func VerifyAuthToken(token string) error {
+func VerifyAuthToken(token string) (int64, error) {
+	claims, err := ParseAuthTokenClaims(token)
+	if err != nil {
+		return -1, err
+	}
+
+	userID := int64(claims["userID"].(float64))
+
+	return userID, nil
+}
+
+func ParseAuthTokenClaims(token string) (jwt.MapClaims, error) {
 	parsedToken, err := jwt.Parse(token, func(token *jwt.Token) (any, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			fmt.Println("Not ok!")
@@ -30,21 +41,17 @@ func VerifyAuthToken(token string) error {
 	})
 
 	if err != nil {
-		return err
+		return jwt.MapClaims{}, err
 	}
 
 	if !parsedToken.Valid {
-		return errors.New("Authorisation token is invalid")
+		return jwt.MapClaims{}, errors.New("Authorisation token is invalid")
 	}
 
 	claims, ok := parsedToken.Claims.(jwt.MapClaims)
 	if !ok {
-		return errors.New("Token claims could not be parsed")
+		return jwt.MapClaims{}, errors.New("Token claims could not be parsed")
 	}
 
-	fmt.Println(claims["email"])
-	fmt.Println(claims["userID"])
-	fmt.Println(claims["exp"])
-
-	return nil
+	return claims, nil
 }
