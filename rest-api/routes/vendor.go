@@ -6,32 +6,13 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/i-amare/rest-api/models"
-	"github.com/i-amare/rest-api/utils"
 )
 
 func createVendor(context *gin.Context) {
-	token := context.Request.Header.Get("Authorization")
-
-	if token == "" {
-		res := gin.H{
-			"message": "No auth token provided",
-		}
-		context.JSON(http.StatusUnauthorized, res)
-		return
-	}
-
-	id, err := utils.VerifyAuthToken(token)
-	if err != nil {
-		res := gin.H{
-			"message": "Not authorised",
-			"error":   err.Error(),
-		}
-		context.JSON(http.StatusUnauthorized, res)
-		return
-	}
+	userID := context.GetInt64("UserID")
 
 	v, err := parseVendorData(context)
-	v.OwnerID = id
+	v.OwnerID = userID
 	if err != nil {
 		return
 	}

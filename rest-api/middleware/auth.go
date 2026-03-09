@@ -18,7 +18,7 @@ func Authenticate(context *gin.Context) {
 		return
 	}
 
-	_, err := utils.VerifyAuthToken(token)
+	userID, err := utils.VerifyAuthToken(token)
 	if err != nil {
 		res := gin.H{
 			"message": "Not authorised",
@@ -28,5 +28,6 @@ func Authenticate(context *gin.Context) {
 		return
 	}
 
+	context.Set("UserID", userID)
 	context.Next()
 }
