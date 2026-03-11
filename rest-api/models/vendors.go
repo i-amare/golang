@@ -21,6 +21,8 @@ func (v *Vendor) Save() error {
 	VALUES (?, ?, ?)
 	`
 
+	fmt.Println("Owner ID: ", v.OwnerID)
+
 	res, err := db.DB.Exec(query, v.Name, v.Description, v.OwnerID)
 	if err != nil {
 		return err
@@ -87,7 +89,7 @@ func GetVendor(id int64) (Vendor, error) {
 
 func GetAllVendors() ([]Vendor, error) {
 	query := `
-	SELECT ID, Name, Description
+	SELECT ID, Name, Description, OwnerID
 	FROM Vendors
 	`
 
@@ -112,7 +114,7 @@ func GetAllVendors() ([]Vendor, error) {
 
 	for res.Next() {
 		var v Vendor
-		if err := res.Scan(&v.ID, &v.Name, &v.Description); err != nil {
+		if err := res.Scan(&v.ID, &v.Name, &v.Description, &v.OwnerID); err != nil {
 			continue
 		}
 
