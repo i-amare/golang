@@ -4,19 +4,21 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/i-amare/rest-api/middleware"
 )
 
 func InitRoutes(server *gin.Engine) {
 	server.GET("/", ping)
 
 	server.GET("vendors", getAllVendors)
-	server.GET("vendors/:id", getVendor)	
-	
+	server.GET("vendors/:id", getVendor)
+
 	server.POST("signup", createUser)
 	server.POST("login", loginUser)
 	server.GET("users", getAllUsers)
 
 	privileged := server.Group("/")
+	privileged.Use(middleware.Authenticate)
 	privileged.POST("vendors", createVendor)
 	privileged.PUT("vendors/:id", updateVendor)
 	privileged.DELETE("vendors/:id", deleteVendor)
