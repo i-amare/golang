@@ -1,15 +1,19 @@
 package routes
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/i-amare/rest-api/models"
+	"github.com/i-amare/rest-api/utils"
 )
 
 func createVendor(context *gin.Context) {
 	userID := context.GetInt64("UserID")
+
+	fmt.Println("User ID: ", userID)
 
 	v, err := parseVendorData(context)
 	v.OwnerID = userID
@@ -70,12 +74,20 @@ func updateVendor(context *gin.Context) {
 		return
 	}
 
-	_, err = fetchVendor(id, context)
+	v, err := fetchVendor(id, context)
 	if err != nil {
 		return
 	}
 
-	v, err := parseVendorData(context)
+	userID := context.GetInt64("UserID")
+	if v.OwnerID != userID && userID != utils.OWNER_ID {
+		res := gin.H{
+			"message": "Unauthorised to edit vendor",
+		}
+		context.JSON(http.StatusUnauthorized, res)
+	}
+
+	v, err = parseVendorData(context)
 	if err != nil {
 		return
 	}
