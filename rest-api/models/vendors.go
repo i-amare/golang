@@ -55,14 +55,14 @@ func (v *Vendor) Update() (sql.Result, error) {
 
 func GetVendor(id int64) (Vendor, error) {
 	query := `
-	SELECT ID, Name, Description
+	SELECT ID, Name, Description, OwnerID
 	FROM Vendors
 	WHERE ID = ?
 	`
 
 	var v Vendor
 	res := db.DB.QueryRow(query, id)
-	err := res.Scan(&v.ID, &v.Name, &v.Description)
+	err := res.Scan(&v.ID, &v.Name, &v.Description, &v.OwnerID)
 	if err != nil {
 		return Vendor{}, err
 	}
