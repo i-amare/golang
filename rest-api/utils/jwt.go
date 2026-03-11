@@ -8,7 +8,8 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-const secretKey = "$2a$14$fP5BuSxkQP/nFAaLtEXRwuwy5a.TR7X7mtb/BjrorLLOaznFB/oPO"
+const SECRET_KEY = "$2a$14$fP5BuSxkQP/nFAaLtEXRwuwy5a.TR7X7mtb/BjrorLLOaznFB/oPO"
+const OWNER_ID = 1
 
 func GenerateAuthToken(email string, userID int64) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
@@ -17,7 +18,7 @@ func GenerateAuthToken(email string, userID int64) (string, error) {
 		"exp":    time.Now().Add(time.Hour * 24 * 7).Unix(),
 	})
 
-	return token.SignedString([]byte(secretKey))
+	return token.SignedString([]byte(SECRET_KEY))
 }
 
 func VerifyAuthToken(token string) (int64, error) {
@@ -37,7 +38,7 @@ func ParseAuthTokenClaims(token string) (jwt.MapClaims, error) {
 			fmt.Println("Not ok!")
 			return "", errors.New("Unexpected token signing method")
 		}
-		return []byte(secretKey), nil
+		return []byte(SECRET_KEY), nil
 	})
 
 	if err != nil {
