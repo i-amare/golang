@@ -36,6 +36,21 @@ func (v *Vendor) Save() error {
 	return nil
 }
 
+func (v *Vendor) Update() (sql.Result, error) {
+	query := `
+	UPDATE Vendors
+	SET Name = ?, Description = ? 
+	WHERE id = ?
+	`
+
+	res, err := db.DB.Exec(query, v.Name, v.Description, v.ID)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	return res, err
+}
+
 func GetVendor(id int64) (Vendor, error) {
 	query := `
 	SELECT ID, Name, Description
@@ -115,21 +130,6 @@ func GetAllVendors() ([]Vendor, error) {
 	}
 
 	return vendorArr, nil
-}
-
-func UpdateVendor(v Vendor) (any, error) {
-	query := `
-	UPDATE Vendors
-	SET Name = ?, Description = ? 
-	WHERE id = ?
-	`
-
-	res, err := db.DB.Exec(query, v.Name, v.Description, v.ID)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	return res, err
 }
 
 func DeleteVendor(id int64) error {

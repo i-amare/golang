@@ -85,20 +85,23 @@ func updateVendor(context *gin.Context) {
 			"message": "Unauthorised to edit vendor",
 		}
 		context.JSON(http.StatusUnauthorized, res)
+		return
 	}
 
-	v, err = parseVendorData(context)
+	inputVendor, err := parseVendorData(context)
 	if err != nil {
 		return
 	}
 
-	v.ID = id
-	_, err = models.UpdateVendor(v)
+	v.Name = inputVendor.Name
+	v.Description = inputVendor.Description
+	_, err = v.Update()
 	if err != nil {
 		res := gin.H{
 			"message": "Error updating vendor",
+			"error":   err.Error(),
 		}
-		context.JSON(http.StatusBadRequest, res)
+		context.JSON(http.StatusInternalServerError, res)
 		return
 	}
 
