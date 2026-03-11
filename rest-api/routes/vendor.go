@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -13,8 +12,7 @@ import (
 func createVendor(context *gin.Context) {
 	userID := context.GetInt64("UserID")
 
-	fmt.Println("User ID: ", userID)
-
+	
 	v, err := parseVendorData(context)
 	v.OwnerID = userID
 	if err != nil {
