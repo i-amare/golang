@@ -11,7 +11,6 @@ import (
 
 func createVendor(context *gin.Context) {
 	userID := context.GetInt64("UserID")
-
 	
 	v, err := parseVendorData(context)
 	v.OwnerID = userID
