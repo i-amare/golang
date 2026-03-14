@@ -11,7 +11,7 @@ import (
 
 func createVendor(context *gin.Context) {
 	userID := context.GetInt64("UserID")
-	
+
 	v, err := parseVendorData(context)
 	v.OwnerID = userID
 	if err != nil {
@@ -115,8 +115,17 @@ func deleteVendor(context *gin.Context) {
 		return
 	}
 
-	_, err = fetchVendor(id, context)
+	v, err := fetchVendor(id, context)
 	if err != nil {
+		return
+	}
+
+	userID := context.GetInt64("UserID")
+	if v.OwnerID != userID && userID != utils.OWNER_ID {
+		res := gin.H{
+			"message": "Unauthorised to delete vendor",
+		}
+		context.JSON(http.StatusUnauthorized, res)
 		return
 	}
 
