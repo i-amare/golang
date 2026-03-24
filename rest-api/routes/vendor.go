@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+
 	"github.com/i-amare/rest-api/models"
 	"github.com/i-amare/rest-api/utils"
 )
