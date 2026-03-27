@@ -9,7 +9,7 @@ import (
 )
 
 const SECRET_KEY = "$2a$14$fP5BuSxkQP/nFAaLtEXRwuwy5a.TR7X7mtb/BjrorLLOaznFB/oPO"
-const OWNER_ID = 1
+const ADMIN_ID = 1
 
 func GenerateAuthToken(email string, userID int64) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{

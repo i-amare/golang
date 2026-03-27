@@ -78,7 +78,7 @@ func updateVendor(context *gin.Context) {
 	}
 
 	userID := context.GetInt64("UserID")
-	if v.OwnerID != userID && userID != utils.OWNER_ID {
+	if v.OwnerID != userID && userID != utils.ADMIN_ID {
 		res := gin.H{
 			"message": "Unauthorised to edit vendor",
 		}
@@ -122,7 +122,7 @@ func deleteVendor(context *gin.Context) {
 	}
 
 	userID := context.GetInt64("UserID")
-	if v.OwnerID != userID && userID != utils.OWNER_ID {
+	if v.OwnerID != userID && userID != utils.ADMIN_ID {
 		res := gin.H{
 			"message": "Unauthorised to delete vendor",
 		}
