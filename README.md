@@ -22,7 +22,7 @@ Folders are organized like course “chapters”:
 - `08.functions/` – recursion, variadic funcs, higher-order funcs/closures, generics
 - `09.price-calculator/` – file IO + JSON output from computed results
 - `10.concurrency/` – goroutines, channels, and a small concurrent “job” processor
-- `rest-api/` – a Gin REST API backed by SQLite
+- `rest-api/` – a Gin REST API backed by SQLite with auth, vendor CRUD, and menu/user endpoints
 
 Most of these folders are **their own Go module** (they contain a `go.mod`), so you run them from inside the folder you care about.
 
@@ -64,7 +64,9 @@ Based on the code in this repo, here’s what I’ve implemented while working t
   - Routing + handlers with Gin (`GET/POST/PUT/DELETE`) (`rest-api/routes/`)
   - JSON binding/validation tags (`binding:"required"`)
   - SQLite setup via `database/sql` + `github.com/mattn/go-sqlite3` (`rest-api/db/`)
-  - Simple vendor CRUD + a `.http` file for manual API calls (`rest-api/api-tests/vendor.http`)
+  - User signup/login with password hashing + JWT auth middleware (`rest-api/routes/users.go`, `rest-api/middleware/`, `rest-api/utils/`)
+  - Vendor CRUD with ownership/admin checks on protected routes (`rest-api/routes/vendor.go`)
+  - Menu item creation + `.http` files for manual API calls (`rest-api/api-tests/`)
 - **Concurrency**
   - Starting goroutines (`go fn()`)
   - Signaling completion with channels (`chan bool`) (`10.concurrency/concurrency-example/`)
