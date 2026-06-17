@@ -1,48 +1,33 @@
 package routes
 
 import (
+	"encoding/json"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
 	"github.com/i-amare/rest-api/models"
+	"github.com/i-amare/rest-api/utils"
 )
 
-func createMenuItem(context *gin.Context) {
-	m, err := parseMenuData(context)
+func createMenuItem(w http.ResponseWriter, r *http.Request) {
+	m, err := parseMenuData(r)
 	if err != nil {
+		utils.WriteError(w, http.StatusBadRequest, "Error parsing data", err)
 		return
 	}
 
-	err = m.Save()
-	if err != nil {
-		res := gin.H{
-			"message": err.Error(),
-			"error":   err,
-		}
-		context.JSON(http.StatusInternalServerError, res)
+	if err = m.Save(); err != nil {
+		utils.WriteError(w, http.StatusInternalServerError, "Error saving menu item", err)
 		return
 	}
 
-	res := gin.H{
-		"message":  "Menu item created",
-		"menuItem": m,
-	}
-	context.JSON(http.StatusOK, res)
+	utils.WriteSuccess(w, http.StatusOK, "Menu item created", m)
 }
 
-func parseMenuData(context *gin.Context) (models.MenuItem, error) {
+func parseMenuData(r *http.Request) (models.MenuItem, error) {
 	var m models.MenuItem
-	err := context.ShouldBindJSON(&m)
+	err := json.NewDecoder(r.Body).Decode(&m)
 	if err != nil {
-		res := gin.H{
-			"message": "Error parsing data",
-			"data":    m,
-			"error":   err.Error(),
-			"err":     err,
-		}
-		context.JSON(http.StatusBadRequest, res)
-		return models.MenuItem{}, err
+		return m, err
 	}
-
 	return m, nil
 }

@@ -1,136 +1,96 @@
 package routes
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
 	"github.com/i-amare/rest-api/models"
 	"github.com/i-amare/rest-api/utils"
 )
 
-func createUser(context *gin.Context) {
-	u, err := parseUserData(context)
+func createUser(w http.ResponseWriter, r *http.Request) {
+	u, err := parseUserData(r)
 	if err != nil {
+		utils.WriteError(w, http.StatusBadRequest, "Error parsing data", err)
 		return
 	}
 
 	u.Password, err = utils.HashPassword(u.Password)
 	if err != nil {
-		res := gin.H{
-			"message": "Error parsing password",
-		}
-		context.JSON(http.StatusInternalServerError, res)
+		utils.WriteError(w, http.StatusInternalServerError, "Error parsing password", err)
 		return
 	}
 
-	err = u.Save()
-	if err != nil {
-		res := gin.H{
-			"message": err.Error(),
-			"error":   err,
-		}
-		context.JSON(http.StatusInternalServerError, res)
+	if err = u.Save(); err != nil {
+		utils.WriteError(w, http.StatusInternalServerError, "Error saving user", err)
 		return
 	}
 
 	authToken, err := utils.GenerateAuthToken(u.Email, u.ID)
 	if err != nil {
-		res := gin.H{
-			"message": "User created, error generating auth token",
-			"vendor":  u,
-		}
-		context.JSON(http.StatusInternalServerError, res)
+		utils.WriteError(w, http.StatusInternalServerError, "User created, error generating auth token", err)
+		return
 	}
 
-	res := gin.H{
-		"message":   "User created",
-		"vendor":    u,
+	utils.WriteSuccess(w, http.StatusCreated, "User created", map[string]interface{}{
+		"user":      u,
 		"authToken": authToken,
-	}
-	context.JSON(http.StatusCreated, res)
+	})
 }
 
-func getAllUsers(context *gin.Context) {
+func getAllUsers(w http.ResponseWriter, r *http.Request) {
 	usersArr, err := models.GetAllUsers()
 	if err != nil {
-		res := gin.H{
-			"message":  "Error fetching users",
-			"error":    err.Error(),
-			"detailed": err,
-		}
-		context.JSON(http.StatusInternalServerError, res)
+		utils.WriteError(w, http.StatusInternalServerError, "Error fetching users", err)
 		return
 	}
 
 	fmt.Println("Printing")
-
-	context.JSON(http.StatusOK, usersArr)
+	utils.WriteSuccess(w, http.StatusOK, "Users fetched successfully", usersArr)
 }
 
-func loginUser(context *gin.Context) {
-	u, err := parseUserData(context)
+func loginUser(w http.ResponseWriter, r *http.Request) {
+	u, err := parseUserData(r)
 	if err != nil {
+		utils.WriteError(w, http.StatusBadRequest, "Error parsing data", err)
 		return
 	}
 
 	u.ID, err = u.GetUserID()
 	if err != nil {
-		res := gin.H{
-			"message": err.Error(),
-			"error":   err,
-		}
-		context.JSON(http.StatusInternalServerError, res)
+		utils.WriteError(w, http.StatusInternalServerError, "Error fetching user", err)
 		return
 	}
 
 	isValid, err := u.ValidateCredentials()
 	if err != nil {
-		res := gin.H{
-			"message": err.Error(),
-			"error":   err,
-		}
-		context.JSON(http.StatusInternalServerError, res)
+		utils.WriteError(w, http.StatusInternalServerError, "Error validating credentials", err)
+		return
 	}
 
 	if !isValid {
-		res := gin.H{
-			"message": "Password is invalid",
-			"details": u,
-		}
-		context.JSON(http.StatusBadRequest, res)
+		utils.WriteError(w, http.StatusBadRequest, "Password is invalid", u)
 		return
 	}
 
 	authToken, err := utils.GenerateAuthToken(u.Email, u.ID)
 	if err != nil {
-		res := gin.H{
-			"message": err.Error(),
-			"error":   err,
-		}
-		context.JSON(http.StatusInternalServerError, res)
+		utils.WriteError(w, http.StatusInternalServerError, "Error generating auth token", err)
 		return
 	}
 
-	res := gin.H{
-		"message":   "Password is valid",
-		"details":   u,
+	utils.WriteSuccess(w, http.StatusOK, "Password is valid", map[string]interface{}{
+		"user":      u,
 		"authToken": authToken,
-	}
-	context.JSON(http.StatusOK, res)
+	})
 }
 
-func parseUserData(context *gin.Context) (models.User, error) {
+func parseUserData(r *http.Request) (models.User, error) {
 	var u models.User
-	err := context.ShouldBindJSON(&u)
+	err := json.NewDecoder(r.Body).Decode(&u)
 	if err != nil {
-		res := gin.H{
-			"message": "Error parsing data",
-			"data":    u,
-		}
-		context.JSON(http.StatusBadRequest, res)
 		return u, err
 	}
-
 	return u, nil
 }

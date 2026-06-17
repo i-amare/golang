@@ -3,39 +3,41 @@ package routes
 import (
 	"net/http"
 
-	"github.com/gin-gonic/gin"
-
+	"github.com/go-chi/chi/v5"
 	"github.com/i-amare/rest-api/middleware"
+	"github.com/i-amare/rest-api/utils"
 )
 
-func InitRoutes(server *gin.Engine) {
-	server.GET("/", ping)
+func InitRoutes(router chi.Router) {
+	router.Get("/", ping)
 
-	loadUserRoutes(server)
-	loadVendorRoutes(server)
+	loadUserRoutes(router)
+	loadVendorRoutes(router)
+
+	router.Route("/vendor", loadVendorRoutes)
 }
 
-func loadUserRoutes(server *gin.Engine) {
-	server.POST("signup", createUser)
-	server.POST("login", loginUser)
-	server.GET("users", getAllUsers)
+func loadUserRoutes(router chi.Router) {
+	router.Post("/signup", createUser)
+	router.Post("/login", loginUser)
+	router.Get("/users", getAllUsers)
 }
 
-func loadVendorRoutes(server *gin.Engine) {
-	server.GET("vendors", getAllVendors)
-	server.GET("vendors/:id", getVendor)
-	
-	privileged := server.Group("/")
-	privileged.Use(middleware.Authenticate)
-	privileged.POST("vendors", createVendor)
-	privileged.PUT("vendors/:id", updateVendor)
-	privileged.DELETE("vendors/:id", deleteVendor)
-	privileged.POST("menu", createMenuItem)
+func loadVendorRoutes(router chi.Router) {
+	router.Get("/", getAllVendors)
+	router.Get("/{id}", getVendor)
+
+	router.Route("/", func(r chi.Router) {
+		r.Use(middleware.Authenticate)
+		r.Post("/", createVendor)
+		r.Put("/{id}", updateVendor)
+		r.Delete("/{id}", deleteVendor)
+		r.Post("/menu", createMenuItem)
+	})
 }
-func ping(context *gin.Context) {
-	response := gin.H{
-		"res":     200,
-		"message": "Hello World",
-	}
-	context.JSON(http.StatusOK, response)
+
+func ping(w http.ResponseWriter, r *http.Request) {
+	utils.WriteSuccess(w, http.StatusOK, "Hello World", map[string]int{
+		"res": 200,
+	})
 }
