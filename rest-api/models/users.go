@@ -9,8 +9,8 @@ import (
 
 type User struct {
 	ID       int64
-	Email    string
-	Password string
+	Email    string `binding:"required,email"`
+	Password string `binding:"required,min=8"`
 }
 
 func (u *User) Save() error {
